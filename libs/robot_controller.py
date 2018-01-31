@@ -21,3 +21,7 @@ class Snatch3r(object):
     
     # TODO: Implement the Snatch3r class as needed when working the sandox exercises
     # (and delete these comments)
+    def __init__(self):
+        """ construct and store a left motor and a right motor."""
+        self.left_motor = None
+        assert self.left_motor
