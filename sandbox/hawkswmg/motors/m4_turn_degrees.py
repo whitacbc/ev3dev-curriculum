@@ -37,6 +37,11 @@ def main():
         if inches_target == 0:
             break
 
+        robot.drive_inches(inches_target, speed_deg_per_second)
+        ev3.Sound.beep().wait()  # Fun little beep
+
+    print("Goodbye!")
+    ev3.Sound.speak("Goodbye").wait()
 
 
 # TODO: 3. Create a method in your library called turn_degrees that receives the degrees_to_turn and turn_speed_sp
