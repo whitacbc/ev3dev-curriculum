@@ -60,7 +60,7 @@ def arm_calibration(arm_motor, touch_sensor):
       :type arm_motor: ev3.MediumMotor
       :type touch_sensor: ev3.TouchSensor
     """
-    # DONE: 3. Implement the arm calibration movement by fixing the code below (it has many bugs).  It should do this:
+    # TODO: 3. Implement the arm calibration movement by fixing the code below (it has many bugs).  It should do this:
     #   Command the arm_motor to run forever in the positive direction at max speed. check
     #   Create an infinite while loop that will block code execution until the touch sensor's is_pressed value is True.c
     #     Within that loop sleep for 0.01 to avoid running code too fast.
@@ -95,7 +95,7 @@ def arm_up(arm_motor, touch_sensor):
       :type arm_motor: ev3.MediumMotor
       :type touch_sensor: ev3.TouchSensor
     """
-    # DONE: 4. Implement the arm up movement by fixing the code below
+    # TODO: 4. Implement the arm up movement by fixing the code below
     # Command the arm_motor to run forever in the positive direction at max speed.
     # Create a while loop that will block code execution until the touch sensor is pressed.
     #   Within the loop sleep for 0.01 to avoid running code too fast.
@@ -118,7 +118,7 @@ def arm_down(arm_motor):
     Type hints:
       :type arm_motor: ev3.MediumMotor
     """
-    # DONE: 5. Implement the arm up movement by fixing the code below
+    # TODO: 5. Implement the arm up movement by fixing the code below
     # Move the arm to the absolute position_sp of 0 at max speed.
     # Wait until the move completes
     # Make a beep sound
