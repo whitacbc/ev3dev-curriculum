@@ -37,10 +37,10 @@ class Snatch3r(object):
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
         """ turns the robot"""
-        self.left_motor.run_to_rel_pos(position_sp= degrees_to_turn * 5.4,
-                                       speed_sp= -turn_speed_sp,
+        self.left_motor.run_to_rel_pos(position_sp= -degrees_to_turn * 4.6,
+                                       speed_sp= turn_speed_sp,
                                        stop_action='brake')
-        self.right_motor.run_to_rel_pos(position_sp= degrees_to_turn * 5.4,
+        self.right_motor.run_to_rel_pos(position_sp= degrees_to_turn * 4.6,
                                         speed_sp=turn_speed_sp,
                                         stop_action='brake')
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
