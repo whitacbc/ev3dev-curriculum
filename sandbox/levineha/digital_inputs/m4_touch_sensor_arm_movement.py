@@ -31,16 +31,13 @@ def main():
         command_to_run = input("Enter c (for calibrate), u (for up), d (for down), or q (for quit): ")
         if command_to_run == 'c':
             print("Calibrate the arm")
-            print("TODO: 3 is to delete this print statement, uncomment the line below, and implement that function.")
-            # arm_calibration(arm_motor, touch_sensor)
+            arm_calibration(arm_motor, touch_sensor)
         elif command_to_run == 'u':
             print("Move the arm to the up position")
-            print("TODO: 4 is to delete this print statement, uncomment the line below, and implement that function.")
-            # arm_up(arm_motor, touch_sensor)
+            arm_up(arm_motor, touch_sensor)
         elif command_to_run == 'd':
             print("Move the arm to the down position")
-            print("TODO: 5 is to delete this print statement, uncomment the line below, and implement that function.")
-            # arm_down(arm_motor)
+            arm_down(arm_motor)
         elif command_to_run == 'q':
             break
         else:
@@ -60,7 +57,7 @@ def arm_calibration(arm_motor, touch_sensor):
       :type arm_motor: ev3.MediumMotor
       :type touch_sensor: ev3.TouchSensor
     """
-    # TODO: 3. Implement the arm calibration movement by fixing the code below (it has many bugs).  It should do this:
+    # DONE: 3. Implement the arm calibration movement by fixing the code below (it has many bugs).  It should do this:
     #   Command the arm_motor to run forever in the positive direction at max speed. check
     #   Create an infinite while loop that will block code execution until the touch sensor's is_pressed value is True.c
     #     Within that loop sleep for 0.01 to avoid running code too fast.
@@ -95,7 +92,7 @@ def arm_up(arm_motor, touch_sensor):
       :type arm_motor: ev3.MediumMotor
       :type touch_sensor: ev3.TouchSensor
     """
-    # TODO: 4. Implement the arm up movement by fixing the code below
+    # DONE: 4. Implement the arm up movement by fixing the code below
     # Command the arm_motor to run forever in the positive direction at max speed.
     # Create a while loop that will block code execution until the touch sensor is pressed.
     #   Within the loop sleep for 0.01 to avoid running code too fast.
@@ -104,7 +101,7 @@ def arm_up(arm_motor, touch_sensor):
 
     # Code that attempts to do this task but has many bugs.  Fix them!
 
-    arm_motor.run_forever(arm_motor.run_to_rel_pos(speed_sp=MAX_SPEED))
+    arm_motor.run_forever(speed_sp=MAX_SPEED)
     while not touch_sensor.is_pressed:
         time.sleep(0.01)
     arm_motor.stop(stop_action="brake")
@@ -118,7 +115,7 @@ def arm_down(arm_motor):
     Type hints:
       :type arm_motor: ev3.MediumMotor
     """
-    # TODO: 5. Implement the arm up movement by fixing the code below
+    # DONE: 5. Implement the arm up movement by fixing the code below
     # Move the arm to the absolute position_sp of 0 at max speed.
     # Wait until the move completes
     # Make a beep sound
@@ -127,7 +124,7 @@ def arm_down(arm_motor):
     ev3. Sound.beep()
 
 
-    # TODO: 6. After you fix the bugs in the three arm movement commands demo your code to a TA or instructor.
+    # DONE: 6. After you fix the bugs in the three arm movement commands demo your code to a TA or instructor.
     #
     # Observations you should make, the TouchSensor is easy to use, but the motor commands are still a little bit
     #   tricky.  It is neat that the same motor API works for both the wheels and the arm.
