@@ -74,7 +74,7 @@ def main():
     #   .on_red_down  to call handle_red_down_1  (that exist already) with state and dc as parameters
     #   .on_blue_up   to call handle_blue_up_1   (that exist already) with state and dc as parameters
     #   .on_blue_down to call handle_blue_down_1 (that exist already) with state and dc as parameters
-    rc = ev3.RemoteControl()
+    rc = ev3.RemoteControl(channel=1)
 
     rc.on_red_up = lambda state: handle_red_up_1(state, dc)
     rc.on_red_down = lambda state: handle_red_down_1(state, dc)
@@ -94,6 +94,7 @@ def main():
     rc4 = ev3.RemoteControl(channel=4)
     rc4.on_red_up = lambda state: handle_red_up_4(state, dc)
 
+
     # Buttons on EV3
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
@@ -108,6 +109,7 @@ def main():
         rc2.process()
         rc3.process()
         rc3.process()
+        rc4.process()
 
         # DONE: 7. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.
         #
