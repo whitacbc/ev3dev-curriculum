@@ -35,7 +35,7 @@ def main():
             break
 
         for k in range(sides):
-            robot.drive_inches(edge_length_in,speed_deg_per_second)
+            robot.drive_inches(edge_length_in, speed_deg_per_second)
             robot.turn_degrees(turn_amount, speed_deg_per_second)
         break
 

@@ -17,6 +17,7 @@ Authors: David Fisher and Brian Whitacre.
 import ev3dev.ev3 as ev3
 import robot_controller as robo
 
+
 def main():
     # --------------------------------------------------------------
     # We have already implemented this module for you.
@@ -42,6 +43,7 @@ def main():
 
     print("Goodbye!")
     ev3.Sound.speak("Goodbye").wait()
+
 
 main()
 
