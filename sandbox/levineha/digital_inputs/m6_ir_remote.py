@@ -62,12 +62,17 @@ def main():
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
 
     # For our standard shutdown button.
+    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
     rc = ev3.RemoteControl(channel=1)
-    left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
-    right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+    rc.on_red_up = lambda state: move_red_up(state, left_motor)
+    rc.on_red_down = lambda state: move_red_down(state, left_motor)
+    rc.on_blue_up = lambda state: move_blue_up(state, right_motor)
+    rc.on_blue_down = lambda state: move_blue_down(state, right_motor)
     robot.arm_calibration()  # Start with an arm calibration in this program.
+
 
 
     while dc.running:
@@ -80,8 +85,39 @@ def main():
     # been tested and shown to work, then have that person commit their work.  All other team members need to do a
     # VCS --> Update project...
     # Once the library is implemented any team member should be able to run his code as stated in todo3.
-    robot.shutdown()
+    # robot.shutdown()
 
+
+def move_red_up(btn_state, left_motor):
+    if btn_state:
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.GREEN)
+        left_motor.run_forever(speed_sp = 600)
+    else:
+        left_motor.stop(stop_action = 'brake')
+
+
+def move_red_down(btn_state, left_motor):
+    if btn_state:
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.RED)
+        left_motor.run_forever(speed_sp = -600)
+    else:
+        left_motor.stop(stop_action='brake')
+
+
+def move_blue_up(btn_state, right_motor):
+    if btn_state:
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
+        right_motor.run_forever(speed_sp = 600)
+    else:
+        right_motor.stop(stop_action='brake')
+
+
+def move_blue_down(btn_state, right_motor):
+    if btn_state:
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
+        right_motor.run_forever(speed_sp = 600)
+    else:
+        right_motor.stop(stop_action='brake')
 # ----------------------------------------------------------------------
 # Event handlers
 # Some event handlers have been written for you (ones for the arm).
