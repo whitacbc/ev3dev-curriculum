@@ -68,25 +68,6 @@ def main():
     left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
     right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
     robot.arm_calibration()  # Start with an arm calibration in this program.
-    rc.
-    def Move_red_up():
-        while(True):
-        ev3.Led.set_color(ev3.Leds.LEFT,ev3.Leds.GREEN)
-        left_motor.run_forever(speed_sp = 600)
-
-    def Move_red_down():
-        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.RED)
-        left_motor.run_forever(speed_sp = -600)
-
-    def Move_blue_up():
-        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
-        right_motor.run_forever(speed_sp = 600)
-
-    def Move_blue_down():
-        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
-        right_motor.run_forever(speed_sp = 600)
-
-
 
 
     while dc.running:

@@ -75,3 +75,20 @@ class Snatch3r(object):
         self.arm_motor.run_to_abs_pos(speed_sp=MAX_SPEED)
         self.arm_motor.wait_while(ev3.Motor.STATE_HOLDING)
         ev3.Sound.beep()
+
+    def move_red_up(self):
+        while(True):
+            ev3.Led.set_color(ev3.Leds.LEFT,ev3.Leds.GREEN)
+            self.left_motor.run_forever(speed_sp = 600)
+
+    def move_red_down(self):
+        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.RED)
+        self.left_motor.run_forever(speed_sp = -600)
+
+    def move_blue_up(self):
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
+        self.right_motor.run_forever(speed_sp = 600)
+
+    def move_blue_down(self):
+        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
+        self.right_motor.run_forever(speed_sp = 600)
