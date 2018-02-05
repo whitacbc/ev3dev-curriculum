@@ -37,6 +37,7 @@ import robot_controller as robo
 # DONE: 3. Have someone on your team run this program on the EV3 and make sure everyone understands the code.
 # Can you see what the robot does and explain what each line of code is doing? Talk as a group to make sure.
 
+
 class DataContainer(object):
     """ Helper class that might be useful to communicate between different callbacks."""
 
@@ -57,30 +58,42 @@ def main():
     robot = robo.Snatch3r()
     dc = DataContainer()
 
-    # TODO: 4. Add the necessary IR handler callbacks as per the instructions above.
+    # DONE: 4. Add the necessary IR handler callbacks as per the instructions
+    #  above.
     # Remote control channel 1 is for driving the crawler tracks around (none of these functions exist yet below).
     # Remote control channel 2 is for moving the arm up and down (all of these functions already exist below).
 
     # For our standard shutdown button.
     left_motor = ev3.LargeMotor(ev3.OUTPUT_B)
+    assert left_motor
     right_motor = ev3.LargeMotor(ev3.OUTPUT_C)
+    assert right_motor
+    arm_motor = ev3.MediumMotor(ev3.OUTPUT_A)
+    assert arm_motor
     btn = ev3.Button()
     btn.on_backspace = lambda state: handle_shutdown(state, dc)
-    rc = ev3.RemoteControl(channel=1)
-    rc.on_red_up = lambda state: move_red_up(state, left_motor)
-    rc.on_red_down = lambda state: move_red_down(state, left_motor)
-    rc.on_blue_up = lambda state: move_blue_up(state, right_motor)
-    rc.on_blue_down = lambda state: move_blue_down(state, right_motor)
+    rc1 = ev3.RemoteControl(channel=1)
+    rc1.on_red_up = lambda state: move_red_up(state, left_motor)
+    rc1.on_red_down = lambda state: move_red_down(state, left_motor)
+    rc1.on_blue_up = lambda state: move_blue_up(state, right_motor)
+    rc1.on_blue_down = lambda state: move_blue_down(state, right_motor)
     robot.arm_calibration()  # Start with an arm calibration in this program.
 
-
+    rc2 = ev3.RemoteControl(channel=2)
+    rc2.on_red_up = lambda state: handle_arm_up_button(state, robot)
+    rc2.on_red_down = lambda state: handle_arm_down_button(state, robot)
+    rc2.on_blue_up = lambda state: handle_calibrate_button(state, robot)
+    # rc2.on_blue_down = lambda state: arm_down(state, arm_motor)
 
     while dc.running:
-        # TODO: 5. Process the RemoteControl objects.
+        # DONE: 5. Process the RemoteControl objects.
         btn.process()
+        rc1.process()
+        rc2.process()
         time.sleep(0.01)
 
-    # TODO: 2. Have everyone talk about this problem together then pick one  member to modify libs/robot_controller.py
+    # DONE: 2. Have everyone talk about this problem together then pick one
+        # member to modify libs/robot_controller.py
     # as necessary to implement the method below as per the instructions in the opening doc string. Once the code has
     # been tested and shown to work, then have that person commit their work.  All other team members need to do a
     # VCS --> Update project...
@@ -90,34 +103,43 @@ def main():
 
 def move_red_up(btn_state, left_motor):
     if btn_state:
-        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.GREEN)
-        left_motor.run_forever(speed_sp = 600)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.GREEN)
+        left_motor.run_forever(speed_sp=600)
     else:
-        left_motor.stop(stop_action = 'brake')
+        left_motor.stop(stop_action='brake')
 
 
 def move_red_down(btn_state, left_motor):
     if btn_state:
-        ev3.Leds.set_color(ev3.Leds.LEFT,ev3.Leds.RED)
-        left_motor.run_forever(speed_sp = -600)
+        ev3.Leds.set_color(ev3.Leds.LEFT, ev3.Leds.RED)
+        left_motor.run_forever(speed_sp=-600)
     else:
         left_motor.stop(stop_action='brake')
 
 
 def move_blue_up(btn_state, right_motor):
     if btn_state:
-        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
-        right_motor.run_forever(speed_sp = 600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.GREEN)
+        right_motor.run_forever(speed_sp=600)
     else:
         right_motor.stop(stop_action='brake')
 
 
 def move_blue_down(btn_state, right_motor):
     if btn_state:
-        ev3.Leds.set_color(ev3.Leds.RIGHT,ev3.Leds.RED)
-        right_motor.run_forever(speed_sp = 600)
+        ev3.Leds.set_color(ev3.Leds.RIGHT, ev3.Leds.RED)
+        right_motor.run_forever(speed_sp=-600)
     else:
         right_motor.stop(stop_action='brake')
+
+
+def arm_down(state, arm_motor):
+    if state:
+        arm_motor.run_forever(speed_sp=-600)
+    else:
+        arm_motor.stop(stop_action='brake')
+
+
 # ----------------------------------------------------------------------
 # Event handlers
 # Some event handlers have been written for you (ones for the arm).
@@ -180,4 +202,6 @@ def handle_shutdown(button_state, dc):
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
 # ----------------------------------------------------------------------
+
+
 main()
