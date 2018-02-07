@@ -30,6 +30,7 @@ class Snatch3r(object):
         assert self.touch_sensor.connected
         assert self.left_motor.connected
         assert self.right_motor.connected
+        self.running = True
 
     def drive_inches(self, inches_target, speed_deg_per_second):
         """ moves the robot by given speed for a given distance"""
@@ -81,3 +82,8 @@ class Snatch3r(object):
         self.left_motor.stop(stop_action='brake')
         self.right_motor.stop(stop_action='brake')
         ev3.Leds.all_off()
+        self.running = False
+
+    def loop_forever(self):
+        while self.running:
+            time.sleep(0.1)

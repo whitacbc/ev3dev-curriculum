@@ -79,7 +79,6 @@ def main():
 
     pc_delegate = MyDelegateOnThePc(button_message)
     mqtt_client = com.MqttClient(pc_delegate)
-    print(mqtt_client)
     mqtt_client.connect_to_ev3()
     # mqtt_client.connect_to_ev3("35.194.247.175")  # Off campus IP address of a GCP broker
 
