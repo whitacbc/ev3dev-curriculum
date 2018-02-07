@@ -40,8 +40,8 @@ import mqtt_remote_method_calls as com
 
 class MyDelegate(object):
 
- def __init__(self, canvas):
-     self.canvas = canvas
+    def __init__(self, canvas):
+        self.canvas = canvas
 
  def on_circle_draw(self, color, x, y):
      self.canvas.create_oval(x - 10, y - 10, x + 10, y + 10, fill=color, width=3)
