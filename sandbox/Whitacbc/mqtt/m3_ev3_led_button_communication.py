@@ -119,6 +119,7 @@ def handle_button_press(button_state, mqtt_client, button_name):
         # You can review the code above to understand how button_name is passed into this function.
 
         mqtt_client.send_message()
+        pass
 
 
 # TODO: 5. Run this program on your EV3 and run m3_pc_led_button_communication.py on your PC at the same time.
