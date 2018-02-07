@@ -137,12 +137,13 @@ def handle_button_press(button_state, mqtt_client, button_name):
     if button_state:
         print("{} button was pressed".format(button_name))
 
-        # DONE: 4. Send a message using MQTT that will:
+        # TODO: 4. Send a message using MQTT that will:
         #   -- Call the method called "button_pressed" on the delegate at the other end of the pipe.
         #   -- Pass the parameters [button_name] as a list.
         # This is meant to help you learn the mqtt_client.send_message syntax.
         # You can review the code above to understand how button_name is passed into this function.
 
+        mqtt_client.send_message()
 
 # DONE: 5. Run this program on your EV3 and run m3_pc_led_button_communication.py on your PC at the same time.
 # This will be the first time you've run a program on the robot today, but you'll remember how to do it (right?).
