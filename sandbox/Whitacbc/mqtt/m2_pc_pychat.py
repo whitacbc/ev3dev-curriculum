@@ -24,8 +24,10 @@ class MyDelegate(object):
 def main():
     # DONE: 2. Set my_name and set team_member_name then try this program with that person.
     # For teams of 3 just have 2 people talk to each other and the other person can just watch this time.
-    my_name = "Brian"  # Used to set the topic that you are *subscribed to* listen to
-    team_member_name = "Megan"  # Used to set the topic that you will *publish to*
+    my_name = "Brian"  # Used to set the topic that you are *subscribed to*
+    # listen to
+    team_member_name = "Megan"  # Used to set the topic that you will *publish
+    #  to*
 
 
 
