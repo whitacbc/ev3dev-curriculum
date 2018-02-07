@@ -40,7 +40,7 @@ def receiving_messages_from_pc():
     robot = robo.Snatch3r()
     mqtt_client = com.MqttClient(robot)
     mqtt_client.connect_to_pc()
-    robot.loop_forever()  # Avoids letting the robot finish until some "end" command.
+    robot.loop_forever() # Avoids letting the robot finish until some "end" command.
 
     # Pretend like the Snatch3r class has these methods.  The other end can say "shutdown"
     def loop_forever(self):
