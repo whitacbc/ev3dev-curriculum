@@ -43,8 +43,8 @@ class MyDelegate(object):
     def __init__(self, canvas):
         self.canvas = canvas
 
- def on_circle_draw(self, color, x, y):
-     self.canvas.create_oval(x - 10, y - 10, x + 10, y + 10, fill=color, width=3)
+     def on_circle_draw(self, color, x, y):
+         self.canvas.create_oval(x - 10, y - 10, x + 10, y + 10, fill=color, width=3)
 
 
 def main():
@@ -111,6 +111,9 @@ def left_mouse_click(event, mqtt_client):
     # Review the lecture notes about the two parameters passed into the mqtt_client.send_message method if needed
     # All of your teammates should receive the message and create a circle of your color at your click location.
     # Additionally you will receive your own message and draw a circle in your color too.
+
+
+
 
     # TODO: 8. Help get everyone on your team running this program at the same time.
     # You should be able to see circles on your computer from everyone else on your team.
