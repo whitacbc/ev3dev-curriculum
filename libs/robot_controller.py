@@ -32,6 +32,8 @@ class Snatch3r(object):
         assert self.right_motor.connected
         self.color_sensor = ev3.ColorSensor()
         assert self.color_sensor
+        self.ir_sensor = ev3.InfraredSensor()
+        assert self.ir_sensor
         self.running = True
 
     def drive_inches(self, inches_target, speed_deg_per_second):
