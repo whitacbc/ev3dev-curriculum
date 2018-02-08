@@ -16,7 +16,6 @@ Authors: David Fisher and Megan Hawksworth.
 """  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import ev3dev.ev3 as ev3
-import time
 
 import robot_controller as robo
 
@@ -82,7 +81,7 @@ def follow_the_line(robot, white_level, black_level):
 
     while True:
         if robot.color_sensor.reflected_light_intensity == black_level:
-            robot.go_forward(200,200)
+            robot.go_forward(200, 200)
         if robot.color_sensor.reflected_light_intensity == white_level:
             robot.go_right(200)
         if robot.touch_sensor.is_pressed:
