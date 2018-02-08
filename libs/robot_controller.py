@@ -89,21 +89,21 @@ class Snatch3r(object):
             time.sleep(0.1)
 
     def go_forward(self, left_speed, right_speed):
-        self.left_motor.run_forever(speed=left_speed)
-        self.right_motor.run_forever(speed=right_speed)
+        self.left_motor.run_forever(speed_sp=left_speed)
+        self.right_motor.run_forever(speed_sp=right_speed)
 
     def go_left(self, left_speed):
-        self.left_motor.run_forever(speed=-left_speed)
-        self.right_motor.run_forever(speed=left_speed)
+        self.left_motor.run_forever(speed_sp=-left_speed)
+        self.right_motor.run_forever(speed_sp=left_speed)
 
     def go_right(self,right_speed):
-        self.left_motor.run_forever(speed=right_speed)
-        self.right_motor.run_forever(speed=-right_speed)
+        self.left_motor.run_forever(speed_sp=right_speed)
+        self.right_motor.run_forever(speed_sp=-right_speed)
 
     def go_backwards(self,left_speed, right_speed):
-        self.left_motor.run_forever(speed=-left_speed)
-        self.right_motor.run_forever(speed=-right_speed)
+        self.left_motor.run_forever(speed_sp=-left_speed)
+        self.right_motor.run_forever(speed_sp=-right_speed)
 
     def not_go(self):
-        self.left_motor.stop_action('brake')
-        self.right_motor.stop_action('brake')
+        self.left_motor.stop(stop_action='brake')
+        self.right_motor.stop(stop_action='brake')
