@@ -31,17 +31,20 @@ class Snatch3r(object):
         assert self.touch_sensor.connected
         assert self.left_motor.connected
         assert self.right_motor.connected
+
         self.color_sensor = ev3.ColorSensor()
         assert self.color_sensor
         self.ir_sensor = ev3.InfraredSensor()
         assert self.ir_sensor
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         assert self.pixy
+
         self.running = True
         self.times_climbed = 0
 
     def drive_inches(self, inches_target, speed_deg_per_second):
-        """ moves the robot by given speed for a given distance"""
+        """ moves the robot by given speed for a given distance. Input
+        positive speed to go forward and a negative speed to go backwards."""
         self.left_motor.run_to_rel_pos(position_sp=inches_target * 90,
                                        speed_sp=speed_deg_per_second,
                                        stop_action='brake')
@@ -49,6 +52,7 @@ class Snatch3r(object):
                                         speed_sp=speed_deg_per_second,
                                         stop_action='brake')
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def turn_degrees(self, degrees_to_turn, turn_speed_sp):
         """ turns the robot"""
@@ -59,8 +63,10 @@ class Snatch3r(object):
                                         speed_sp=turn_speed_sp,
                                         stop_action='brake')
         self.left_motor.wait_while(ev3.Motor.STATE_RUNNING)
+        self.right_motor.wait_while(ev3.Motor.STATE_RUNNING)
 
     def arm_calibration(self):
+        """Sets the down position as zero for the arm"""
         self.arm_motor.run_forever(speed_sp=MAX_SPEED)
         while not self.touch_sensor:
             time.sleep(0.01)
@@ -74,6 +80,7 @@ class Snatch3r(object):
         self.arm_motor.position = 0  # Calibrate the down position as 0 (this line is correct as is).
 
     def arm_up(self):
+        """Moves arm up until touch sensor is pressed, then beeps"""
         self.arm_motor.run_forever(speed_sp=MAX_SPEED)
         while not self.touch_sensor.is_pressed:
             time.sleep(0.01)
@@ -81,11 +88,13 @@ class Snatch3r(object):
         ev3.Sound.beep()
 
     def arm_down(self):
+        """Moves arm down to previously calibrated position"""
         self.arm_motor.run_to_abs_pos(speed_sp=MAX_SPEED)
         self.arm_motor.wait_while(ev3.Motor.STATE_HOLDING)
         ev3.Sound.beep()
 
     def shutdown(self):
+        """Stops all motors and turns off LEDs"""
         self.arm_motor.stop(stop_action='brake')
         self.left_motor.stop(stop_action='brake')
         self.right_motor.stop(stop_action='brake')
@@ -93,30 +102,44 @@ class Snatch3r(object):
         self.running = False
 
     def loop_forever(self):
+        """Continuouly checks for changes while the function is called"""
         while self.running:
             time.sleep(0.1)
 
     def go_forward(self, left_speed, right_speed):
+        """Moves the robot forward given a positive speed for both the left
+        and right motors. If the speeds are not the same, makes the robot
+        arc."""
         self.left_motor.run_forever(speed_sp=left_speed)
         self.right_motor.run_forever(speed_sp=right_speed)
 
     def go_left(self, left_speed):
+        """Makes the robot turn left with a given speed"""
         self.left_motor.run_forever(speed_sp=-left_speed)
         self.right_motor.run_forever(speed_sp=left_speed)
 
     def go_right(self, right_speed):
+        """Makes the robot turn right with a given speed"""
         self.left_motor.run_forever(speed_sp=right_speed)
         self.right_motor.run_forever(speed_sp=-right_speed)
 
     def go_backwards(self, left_speed, right_speed):
+        """Moves the robot backwards given a negative speed for both the left
+                and right motors. If the speeds are not the same, makes the robot
+                arc."""
         self.left_motor.run_forever(speed_sp=-left_speed)
         self.right_motor.run_forever(speed_sp=-right_speed)
 
     def not_go(self):
+        """Stops the left and right motors bringing the robot to a stop"""
         self.left_motor.stop(stop_action='brake')
         self.right_motor.stop(stop_action='brake')
 
     def seek_beacon(self):
+        """This program attempts to find a beacon. When the distance is
+        -128, the robot will turn until it spots the beacon. Then it will
+        continue in its direction, altering it's heading by turning left and
+        right. Once distance reaches 1, the robot stops."""
         beacon_seeker = ev3.BeaconSeeker(channel=1)
         forward_speed = 300
         turn_speed = 100
