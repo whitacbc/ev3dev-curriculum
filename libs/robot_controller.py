@@ -115,10 +115,12 @@ class Snatch3r(object):
         self.left_motor.stop(stop_action='brake')
         self.right_motor.stop(stop_action='brake')
 
-    def seek_beacon(self,forward_speed, turn_speed, beacon_seeker):
-        value = False
+    def seek_beacon(self):
+        beacon_seeker = ev3.BeaconSeeker(channel=1)
         current_heading = beacon_seeker.heading
         current_distance = beacon_seeker.distance
+        forward_speed = 300
+        turn_speed = 100
         while True:
             if math.fabs(current_heading) < 2:
                 print("On the right heading. Distance: ", current_distance)
@@ -126,10 +128,10 @@ class Snatch3r(object):
                     current_heading) > 2:
                 print("Adjusting heading: ", current_heading)
                 if current_heading < 0:
-                    self.robot.go_left(turn_speed)
+                    self.go_left(turn_speed)
                     time.sleep(0.5)
                 if current_heading > 0:
-                    self.robot.go_right(turn_speed)
+                    self.go_right(turn_speed)
                     time.sleep(0.5)
 
             if math.fabs(current_heading) > 10:
@@ -138,13 +140,13 @@ class Snatch3r(object):
             if current_distance == 1:
                 time.sleep(1.5)
                 print('you have found the beacon!')
-                self.robot.not_go()
-                value = True
+                self.not_go()
+                what = True
                 break
 
-
             else:
-                self.robot.go_forward(forward_speed, forward_speed)
+                self.go_forward(forward_speed, forward_speed)
 
             time.sleep(0.1)
-        return value
+        return what
+    
