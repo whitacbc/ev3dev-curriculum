@@ -116,39 +116,41 @@ class Snatch3r(object):
         self.right_motor.stop(stop_action='brake')
 
     def seek_beacon(self):
+        what = False
         beacon_seeker = ev3.BeaconSeeker(channel=1)
-        current_heading = beacon_seeker.heading
-        current_distance = beacon_seeker.distance
         forward_speed = 300
         turn_speed = 100
         while True:
-            if current_distance > -128:
+            current_heading = beacon_seeker.heading
+            current_distance = beacon_seeker.distance
+            if current_distance == -128:
                 self.go_right(100)
-            if math.fabs(current_heading) < 2:
-                print("On the right heading. Distance: ", current_distance)
-            if math.fabs(current_heading) < 10 and math.fabs(
-                    current_heading) > 2:
-                print("Adjusting heading: ", current_heading)
-                if current_heading < 0:
-                    self.go_left(turn_speed)
-                    time.sleep(0.5)
-                if current_heading > 0:
-                    self.go_right(turn_speed)
-                    time.sleep(0.5)
-
-            if math.fabs(current_heading) > 10:
-                self.go_right(100)
-                
-            if current_distance == 1:
-                time.sleep(1.5)
-                print('you have found the beacon!')
-                self.not_go()
-                what = True
-                break
-
             else:
-                self.go_forward(forward_speed, forward_speed)
+                if math.fabs(current_heading) < 2:
+                    print("On the right heading. Distance: ", current_distance)
+                    self.go_forward(forward_speed, forward_speed)
+                if math.fabs(current_heading) < 10 and math.fabs(
+                        current_heading) > 2:
+                    print("Adjusting heading: ", current_heading)
+                    if current_heading < 0:
+                        self.go_left(turn_speed)
+                        time.sleep(0.5)
+                    if current_heading > 0:
+                        self.go_right(turn_speed)
+                        time.sleep(0.5)
 
+                if math.fabs(current_heading) > 10:
+                    self.go_right(100)
+
+                if current_distance == 1:
+                    self.go_forward(300,300)
+                    time.sleep(1.5)
+                    print('you have found the beacon!')
+                    self.not_go()
+                    what = True
+                    break
+
+            print(beacon_seeker.distance, beacon_seeker.heading)
             time.sleep(0.1)
         return what
 
