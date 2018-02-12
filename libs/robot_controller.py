@@ -38,6 +38,7 @@ class Snatch3r(object):
         self.pixy = ev3.Sensor(driver_name="pixy-lego")
         assert self.pixy
         self.running = True
+        self.times_climbed = 0
 
     def drive_inches(self, inches_target, speed_deg_per_second):
         """ moves the robot by given speed for a given distance"""
@@ -116,7 +117,6 @@ class Snatch3r(object):
         self.right_motor.stop(stop_action='brake')
 
     def seek_beacon(self):
-        what = False
         beacon_seeker = ev3.BeaconSeeker(channel=1)
         forward_speed = 300
         turn_speed = 100
@@ -143,7 +143,7 @@ class Snatch3r(object):
                     self.go_right(100)
 
                 if current_distance == 1:
-                    self.go_forward(300,300)
+                    self.go_forward(300, 300)
                     time.sleep(1.5)
                     print('you have found the beacon!')
                     self.not_go()
@@ -157,6 +157,7 @@ class Snatch3r(object):
     def climb_building(self):
         """Moves forward If close to an object, stops the robot and backs
         away. Gorilla noise? hawkswmg"""
+        self.times_climbed += 1
         while True:
             self.go_forward(400, 400)
             if self.ir_sensor.proximity == 1:
@@ -164,3 +165,4 @@ class Snatch3r(object):
                 self.drive_inches(2, -200)
                 break
             time.sleep(0.1)
+        return self.times_climbed

@@ -27,6 +27,7 @@ import time
 import robot_controller as robo
 
 
+# noinspection PyBroadException
 def main():
     print("--------------------------------------------")
     print(" Beacon pickup")
