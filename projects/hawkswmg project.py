@@ -7,8 +7,6 @@ import time
 
 
 def main():
-    ev3.Sound.speak('argh')
-    time.sleep(0.1)
     robot = robo.Snatch3r()
     robot.climb_building()
     robot.shutdown()

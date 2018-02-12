@@ -122,6 +122,8 @@ class Snatch3r(object):
         forward_speed = 300
         turn_speed = 100
         while True:
+            if current_distance > -128:
+                self.go_right(100)
             if math.fabs(current_heading) < 2:
                 print("On the right heading. Distance: ", current_distance)
             if math.fabs(current_heading) < 10 and math.fabs(
@@ -135,8 +137,8 @@ class Snatch3r(object):
                     time.sleep(0.5)
 
             if math.fabs(current_heading) > 10:
-                print("Heading is too far off to fix: ", current_heading)
-
+                self.go_right(100)
+                
             if current_distance == 1:
                 time.sleep(1.5)
                 print('you have found the beacon!')
@@ -152,7 +154,7 @@ class Snatch3r(object):
 
     def climb_building(self):
         """Moves forward If close to an object, stops the robot and backs
-        away. Gorilla noise?"""
+        away. Gorilla noise? hawkswmg"""
         while True:
             self.go_forward(400, 400)
             if self.ir_sensor.proximity == 1:
