@@ -63,7 +63,6 @@ def seek_beacon(robot):
     turn_speed = 100
     beacon_seeker = ev3.BeaconSeeker(channel=1)
 
-
     while not robot.touch_sensor.is_pressed:
         # The touch sensor can be used to abort the attempt (sometimes handy during testing)
 
@@ -117,7 +116,7 @@ def seek_beacon(robot):
                 return True
 
             else:
-                robot.go_forward(forward_speed,forward_speed)
+                robot.go_forward(forward_speed, forward_speed)
 
         time.sleep(0.2)
 
