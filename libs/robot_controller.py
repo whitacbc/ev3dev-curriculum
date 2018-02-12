@@ -149,4 +149,15 @@ class Snatch3r(object):
 
             time.sleep(0.1)
         return what
-    
+
+    def climb_building(self):
+        """Moves forward If close to an object, stops the robot and backs
+        away. Gorilla noise?"""
+        while True:
+            self.go_forward(400, 400)
+            if self.ir_sensor.proximity == 1:
+                self.not_go()
+                self.drive_inches(2, -200)
+                break
+            time.sleep(0.1)
+            
