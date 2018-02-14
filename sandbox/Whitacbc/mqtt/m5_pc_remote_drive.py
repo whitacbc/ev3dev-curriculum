@@ -124,7 +124,7 @@ def main():
 # ----------------------------------------------------------------------
 # Tkinter callbacks
 # ----------------------------------------------------------------------
-# TODO: 4. Implement the functions for the drive button callbacks.
+# DONE: 4. Implement the functions for the drive button callbacks.
 def some_forward(mqtt_client, left_speed_entry, right_speed_entry):
     left_speed = int(left_speed_entry.get())
     right_speed = int(right_speed_entry.get())
@@ -152,7 +152,8 @@ def some_back(mqtt_client, left_speed_entry, right_speed_entry):
     mqtt_client.send_message("go_backwards", [left_speed,
                                             right_speed])
 
-# TODO: 5. Call over a TA or instructor to sign your team's checkoff sheet and do a code review.  This is the final one!
+# DONE: 5. Call over a TA or instructor to sign your team's checkoff sheet and
+# do a code review.  This is the final one!
 #
 # Observations you should make, you did basically this same program using the IR Remote, but your computer can be a
 # remote control that can do A LOT more than an IR Remote.  We are just doing the basics here.
