@@ -175,31 +175,3 @@ class Snatch3r(object):
             print(beacon_seeker.distance, beacon_seeker.heading)
             time.sleep(0.1)
         return what
-
-    def climb_building_og(self, mqtt):
-        """Moves forward If close to an object, stops the robot and backs
-        away. Gorilla noise? hawkswmg"""
-        while True:
-            self.go_forward(400, 400)
-            if self.ir_sensor.proximity == 1:
-                self.not_go()
-                self.drive_inches(2, -200)
-                mqtt.send_message("hit_object")
-                break
-            if self.color_sensor.color == ev3.ColorSensor.COLOR_BLACK:
-                self.not_go()
-                self.drive_inches(2, -200)
-                mqtt.send_message("fall_off_building")
-                break
-            if self.color_sensor.color == ev3.ColorSensor.COLOR_RED:
-                while True:
-                    if self.color_sensor.color == ev3.ColorSensor.COLOR_RED:
-                        self.go_forward(200, 200)
-                    if self.color_sensor.color == ev3.ColorSensor.COLOR_WHITE:
-                        self.go_right(200)
-                    if self.color_sensor.color == ev3.ColorSensor.COLOR_BLUE:
-                        break
-                self.not_go()
-                mqtt.send_message()
-                self.arm_up()
-            time.sleep(0.1)
