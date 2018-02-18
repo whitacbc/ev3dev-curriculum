@@ -7,30 +7,33 @@ import time
 import mqtt_remote_method_calls as com
 
 
-def gorilla_noises():
-    ev3.Sound.speak("King_Kong_Roar_.wav").wait()
-
-
-def quote_king_kong():
-    ev3.Sound.play("standin (1).wav").wait()
-
-
 class DelegateEv3(object):
     """This delegate helps recieve messages from the ev3"""
     def __init__(self, robot):
         self.mqtt = com.MqttClient(self)
         self.robot = robot
+        self.running = True
+
+    def gorilla_noises(self):
+        ev3.Sound.play("monkeys1.wav")
+
+    def joke_king_kong(self):
+        ev3.Sound.speak("What’s big and hairy and climbs up the Empire "
+                        "State Building in a dress?").wait()
+        time.sleep(2)
+        ev3.Sound.speak("Queen Kong").wait()
 
     def climb_building(self):
         """Moves forward If close to an object, stops the robot and backs
         away. Gorilla noise? hawkswmg"""
         while True:
-            self.robot.go_forward(300, 300)
-            if self.robot.ir_sensor.proximity < 3:
+            self.robot.go_forward(200, 200)
+            if self.robot.ir_sensor.proximity < 9:
                 print("ev3 file. Too close")
                 ev3.Sound.beep()
                 self.robot.not_go()
-                self.robot.drive_inches(-2, 200)
+                self.gorilla_noises()
+                self.drive_inches(-2, 200)
                 time.sleep(0.2)
                 self.mqtt.send_message("hit_object")
                 break
@@ -38,7 +41,8 @@ class DelegateEv3(object):
                 print("ev3 file. Sees black")
                 ev3.Sound.beep()
                 self.robot.not_go()
-                self.robot.drive_inches(-2, 200)
+                self.gorilla_noises()
+                self.drive_inches(-2, 200)
                 time.sleep(0.2)
                 self.mqtt.send_message("fall_off_building")
                 break
@@ -55,18 +59,16 @@ class DelegateEv3(object):
                         print("see blue")
                         break
                 self.robot.not_go()
+                self.gorilla_noises()
                 self.robot.arm_up()
                 self.mqtt.send_message("at_the_top")
                 break
-            time.sleep(0.1)
+            time.sleep(0.09)
 
     def end_the_rampage(self):
+        self.mqtt.client.disconnect()
         ev3.Sound.speak("You will never stop me!")
-        end_btn = ev3.Button()
-        end_btn.on_up = lambda state: btn_pressed(self.mqtt, self.robot)
-        end_btn.on_down = lambda state: btn_pressed(self.mqtt, self.robot)
-        end_btn.on_left = lambda state: btn_pressed(self.mqtt, self.robot)
-        end_btn.on_right = lambda state: btn_pressed(self.mqtt, self.robot)
+        game_over(self.robot)
 
     # The files below are from the snatch3r file
 
@@ -134,17 +136,30 @@ class DelegateEv3(object):
 
 
 def main():
-    #ev3.Sound.speak("Welcome to King Kong's Adventure").wait()
+    ev3.Sound.speak("Welcome to King Kong's Adventure").wait()
     robot = robo.Snatch3r()
     mydelegate = DelegateEv3(robot)
     mydelegate.mqtt.connect_to_pc()
     robot.loop_forever()
 
 
-def btn_pressed(mqtt, robot):
-    robot.arm_down()
+def game_over(robot):
+    dele = DelegateEv3(robot)
+    dele.mqtt.connect_to_pc()
+    end_btn = ev3.Button()
+    end_btn.on_up = lambda state: btn_pressed(dele)
+    end_btn.on_down = lambda state: btn_pressed(dele)
+    end_btn.on_left = lambda state: btn_pressed(dele)
+    end_btn.on_right = lambda state: btn_pressed(dele)
+    while dele.running:
+        end_btn.process()
+
+
+def btn_pressed(dele):
+    dele.robot.arm_down()
     ev3.Sound.speak("Godzilla was a better movie anyway").wait()
-    mqtt.send_message("the_end")
+    dele.mqtt.send_message("the_end")
+    dele.running = False
 
 
 main()

@@ -5,7 +5,6 @@ import tkinter
 from tkinter import ttk
 from PIL import ImageTk, Image
 import mqtt_remote_method_calls as com
-import time
 
 
 class DelegatePC(object):
@@ -17,85 +16,22 @@ class DelegatePC(object):
     def hit_object(self):
         """Creates a new tkinter window that allows you to turn the robot
         adn continue forward after hitting an object"""
+        self.mqtt.client.disconnect()
         print("hit_object")
-        wall_crash(self)
+        wall_crash()
 
     def fall_off_building(self):
         """Creates a new tkinter window that allows you to turn the robot
                 and continue forward after reaching the edge of the given
-                map"""
-        fall_root = tkinter.Tk()
-        fall_root.title("Watch where you are going!")
-        fall_frame = ttk.Frame(fall_root, padding=30)
-        fall_frame.grid()
-
-        fall_text = tkinter.Label(fall_frame, text="You are about to fall "
-                                                   "off the building!",
-                                 font="Calibri")
-        fall_text.grid(row=1, column=1)
-        return_button = ttk.Button(fall_frame, text="Quit")
-        return_button.grid(row=0, column=2)
-        return_button['command'] = lambda: quit_mode(self.mqtt, fall_root)
-        left_blank_space = ttk.Label(fall_frame, text="           ",
-                                     padding=20)
-        left_blank_space.grid(row=0, column=0)
-
-        fall_direc1 = ttk.Label(fall_frame, text="Use the arrow keys to turn "
-                                              "away from the object in front of"
-                                              "you.")
-        fall_direc1.grid(row=2, column=1)
-        fall_direc2 = ttk.Label(fall_frame, text="Use the space bar to "
-                                                 "stop between actions.")
-        fall_direc2.grid(row=3, column=1)
-        fall_direc3 = ttk.Label(fall_frame, text="When you think you will "
-                                                 "head in a "
-                                                 "good direction, press the "
-                                                 "button below ")
-        fall_direc3.grid(row=4, column=1)
-
-        climb_btn = ttk.Button(fall_frame, text="Climb the building!")
-        climb_btn.grid(row=5, column=1)
-        climb_btn['command'] = lambda: climb(self.mqtt, fall_root)
-
-        fall_root.bind('<Left>', lambda event: move_left(self.mqtt))
-        fall_root.bind('<Right>', lambda event: move_right(self.mqtt))
-        fall_root.bind('<space>', lambda event: stop(self.mqtt))
-
-        fall_root.mainloop()
+                map (outlined in black)"""
+        self.mqtt.client.disconnect()
+        print("fall off")
+        see_black()
 
     def at_the_top(self):
-        top_root = tkinter.Tk()
-        top_root.title("You Made it!")
-        top_frame = ttk.Frame(top_root, padding=30)
-        top_frame.grid()
-
-        top_text = tkinter.Label(top_frame, text="Congratulations! You made "
-                                                 "it!!",
-                                  font="Calibri")
-        top_text.grid(row=1, column=1)
-        top_button = ttk.Button(top_frame, text="Quit")
-        top_button.grid(row=0, column=2)
-        top_button['command'] = lambda: quit_mode(self.mqtt, top_root)
-        left_blank_space = ttk.Label(top_frame, text="           ",
-                                     padding=20)
-        left_blank_space.grid(row=0, column=0)
-
-        top_direc1 = ttk.Label(top_frame, text="You found the maiden "
-                                               "at the top of "
-                                               "the building!")
-        top_direc1.grid(row=2, column=1)
-        top_direc2 = ttk.Label(top_frame, text="But, like all stories this "
-                                               "one must reach it's end.")
-        top_direc2.grid(row=3, column=1)
-        top_direc3 = ttk.Label(top_frame, text="In  order to stop King "
-                                               "Kong's rampage, hit one of "
-                                               "the buttons on the robot ")
-        top_direc3.grid(row=4, column=1)
-
-        self.mqtt.send_message("end_the_rampage")
-
-        time.sleep(5)
-        top_root.destroy()
+        self.mqtt.client.disconnect()
+        print("reached the top")
+        game_over()
 
     def the_end(self):
         end_root = tkinter.Toplevel()
@@ -103,10 +39,8 @@ class DelegatePC(object):
         end_frame = ttk.Frame(end_root, padding=30)
         end_frame.pack()
 
-        pic = r"C:\Users\hawkswmg.ROSE-HULMAN\Documents\CSSE120\ev3dev" \
-              r"-curriculum\projects\hawkswmg " \
-              r"project\king-kong 2.jpg"
-        img = ImageTk.PhotoImage(file=pic)
+        pic = "smile_kiko.jpg"
+        img = ImageTk.PhotoImage(Image.open(pic))
         end_pic_label = tkinter.Label(end_frame, image=img)
         end_pic_label.pack()
 
@@ -285,9 +219,9 @@ def sandbox_mode(root, mqtt):
     noise_button = ttk.Button(sb_panel, text="Noises")
     noise_button.grid(row=10, column=0)
     noise_button['command'] = lambda: make_noise(mqtt)
-    quote_button = ttk.Button(sb_panel, text="Quote King-Kong")
+    quote_button = ttk.Button(sb_panel, text="King-Kong Joke")
     quote_button.grid(row=10, column=2)
-    quote_button['command'] = lambda: quote(mqtt)
+    quote_button['command'] = lambda: joke(mqtt)
 
     btm_blank_space = ttk.Label(sb_panel, text="           ", padding=20)
     btm_blank_space.grid(row=11, column=0)
@@ -295,15 +229,16 @@ def sandbox_mode(root, mqtt):
     sb_root.mainloop()
 
 
-def wall_crash(dele):
+def wall_crash():
+    dele = DelegatePC()
     dele.mqtt.connect_to_ev3()
-
     hit_root = tkinter.Tk()
     hit_root.title("Watch where you are going!")
     hit_frame = ttk.Frame(hit_root, padding=30)
     hit_frame.grid()
 
-    hit_text = tkinter.Label(hit_frame, text="You crashed into a wall!",
+    hit_text = tkinter.Label(hit_frame, text="There is a helicopter in the "
+                                             "way!",
                              font="Calibri")
     hit_text.grid(row=1, column=1)
     return_button = ttk.Button(hit_frame, text="Quit")
@@ -334,6 +269,89 @@ def wall_crash(dele):
     hit_root.bind('<space>', lambda event: stop(dele.mqtt))
 
     hit_root.mainloop()
+
+
+def see_black():
+    dele = DelegatePC()
+    dele.mqtt.connect_to_ev3()
+
+    fall_root = tkinter.Tk()
+    fall_root.title("Watch where you are going!")
+    fall_frame = ttk.Frame(fall_root, padding=30)
+    fall_frame.grid()
+
+    fall_text = tkinter.Label(fall_frame, text="You are about to fall "
+                                               "off the building!",
+                              font="Calibri")
+    fall_text.grid(row=1, column=1)
+    return_button = ttk.Button(fall_frame, text="Quit")
+    return_button.grid(row=0, column=2)
+    return_button['command'] = lambda: quit_mode(dele.mqtt, fall_root)
+    left_blank_space = ttk.Label(fall_frame, text="           ",
+                                 padding=20)
+    left_blank_space.grid(row=0, column=0)
+
+    fall_direc1 = ttk.Label(fall_frame, text="Use the arrow keys to turn "
+                                             "away from the object in front of"
+                                             "you.")
+    fall_direc1.grid(row=2, column=1)
+    fall_direc2 = ttk.Label(fall_frame, text="Use the space bar to "
+                                             "stop between actions.")
+    fall_direc2.grid(row=3, column=1)
+    fall_direc3 = ttk.Label(fall_frame, text="When you think you will "
+                                             "head in a "
+                                             "good direction, press the "
+                                             "button below ")
+    fall_direc3.grid(row=4, column=1)
+
+    climb_btn = ttk.Button(fall_frame, text="Climb the building!")
+    climb_btn.grid(row=5, column=1)
+    climb_btn['command'] = lambda: climb(dele.mqtt, fall_root)
+
+    fall_root.bind('<Left>', lambda event: move_left(dele.mqtt))
+    fall_root.bind('<Right>', lambda event: move_right(dele.mqtt))
+    fall_root.bind('<space>', lambda event: stop(dele.mqtt))
+
+    fall_root.mainloop()
+
+
+def game_over():
+    dele = DelegatePC()
+    dele.mqtt.connect_to_ev3()
+
+    top_root = tkinter.Tk()
+    top_root.title("You Made it!")
+    top_frame = ttk.Frame(top_root, padding=30)
+    top_frame.grid()
+
+    top_text = tkinter.Label(top_frame, text="Congratulations! You made "
+                                             "it!!",
+                             font="Calibri")
+    top_text.grid(row=1, column=1)
+    top_button = ttk.Button(top_frame, text="Quit")
+    top_button.grid(row=0, column=2)
+    top_button['command'] = lambda: quit_mode(dele.mqtt, top_root)
+    left_blank_space = ttk.Label(top_frame, text="           ",
+                                 padding=20)
+    left_blank_space.grid(row=0, column=0)
+
+    top_direc1 = ttk.Label(top_frame, text="You found the maiden "
+                                           "at the top of "
+                                           "the building!")
+    top_direc1.grid(row=2, column=1)
+    top_direc2 = ttk.Label(top_frame, text="But, like all stories this "
+                                           "one must reach it's end.")
+    top_direc2.grid(row=3, column=1)
+    top_direc3 = ttk.Label(top_frame, text="In  order to stop King "
+                                           "Kong's rampage, hit one of "
+                                           "the buttons on the robot ")
+    top_direc3.grid(row=4, column=1)
+    ok_btn = ttk.Button(top_frame, text="OK")
+    ok_btn.grid(row=5, column=1)
+    ok_btn['command'] = lambda: dele.mqtt.send_message("end_the_rampage")
+
+    top_root.mainloop()
+
 
 """The functions below are the handles on the buttons used in both modes"""
 
@@ -374,10 +392,10 @@ def make_noise(mqttclient):
     mqttclient.send_message("gorilla_noises")
 
 
-def quote(mqttclient):
+def joke(mqttclient):
     """Sends a message for the robot to say a king kong quote"""
-    print("quote")
-    mqttclient.send_message("quote_king_kong")
+    print("joke")
+    mqttclient.send_message("joke_king_kong")
 
 
 def arm_up(mqttclient):
@@ -405,10 +423,6 @@ def climb(mqttclient, root):
     robot controller. It also removes the current tkinter window"""
     mqttclient.send_message("climb_building")
     root.destroy()
-
-
-def beep(mqtt):
-    mqtt.send_message("beep_at_hand")
 
 
 main()
