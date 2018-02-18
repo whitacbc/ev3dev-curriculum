@@ -29,11 +29,14 @@ class DelegatePC(object):
         see_black()
 
     def at_the_top(self):
+        """prints message and calls function game_over"""
         self.mqtt.client.disconnect()
         print("reached the top")
         game_over()
 
     def the_end(self):
+        """Opens a window with an image and a quit button. Pressing the
+        quit button brings you back the choice mode"""
         end_root = tkinter.Toplevel()
         end_root.title("Thanks for Playing")
         end_frame = ttk.Frame(end_root, padding=30)
@@ -115,12 +118,6 @@ def story_mode(root, mqtt):
     st_root.title("King-Kong: Story mode")
     st_frame = ttk.Frame(st_root, padding=30)
     st_frame.grid()
-
-    # pic = r"C:\Users\hawkswmg.ROSE-HULMAN\Documents\CSSE120\ev3dev" \
-            # r"-curriculum\projects\hawkswmg project\king-kong 3.png"
-    # img = ImageTk.PhotoImage(Image.open(pic))
-    # st_pic_label = tkinter.Label(st_frame, image=img)
-    # st_pic_label.pack()
 
     return_button = ttk.Button(st_frame, text="Quit")
     return_button.grid(row=0, column=2)
@@ -229,7 +226,13 @@ def sandbox_mode(root, mqtt):
     sb_root.mainloop()
 
 
+"""Below are the functions used in DelegatePC"""
+
+
 def wall_crash():
+    """When the robot sends signal, opens a window saying that there is a
+    helicopter in the way. Gives options of turning (using arrow keys) or
+    calling the climb_the_building function"""
     dele = DelegatePC()
     dele.mqtt.connect_to_ev3()
     hit_root = tkinter.Tk()
@@ -272,6 +275,9 @@ def wall_crash():
 
 
 def see_black():
+    """When the robot sends signal, opens a window saying that you are
+    about to fall off the building. Gives options of turning (using arrow
+    keys) or calling the climb_the_building function"""
     dele = DelegatePC()
     dele.mqtt.connect_to_ev3()
 
@@ -316,6 +322,9 @@ def see_black():
 
 
 def game_over():
+    """When the robot sends signal, opens a window that tells you that you
+    have found the maiden and reached the top of the building. When OK is
+    clicked sends message "end the rampage" to the robot"""
     dele = DelegatePC()
     dele.mqtt.connect_to_ev3()
 

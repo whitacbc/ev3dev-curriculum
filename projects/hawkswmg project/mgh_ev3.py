@@ -15,9 +15,11 @@ class DelegateEv3(object):
         self.running = True
 
     def gorilla_noises(self):
+        """Makes gorilla noise"""
         ev3.Sound.play("monkeys1.wav")
 
     def joke_king_kong(self):
+        """Tells a timed joke"""
         ev3.Sound.speak("What’s big and hairy and climbs up the Empire "
                         "State Building in a dress?").wait()
         time.sleep(2)
@@ -66,6 +68,8 @@ class DelegateEv3(object):
             time.sleep(0.09)
 
     def end_the_rampage(self):
+        """calls the function game_over in order to lower the robot arm and
+        open the final window"""
         self.mqtt.client.disconnect()
         ev3.Sound.speak("You will never stop me!")
         game_over(self.robot)
@@ -144,6 +148,7 @@ def main():
 
 
 def game_over(robot):
+    """Any button on the robot calls btn_pressed"""
     dele = DelegateEv3(robot)
     dele.mqtt.connect_to_pc()
     end_btn = ev3.Button()
@@ -156,6 +161,8 @@ def game_over(robot):
 
 
 def btn_pressed(dele):
+    """Puts the robot arm down, speaks, and sends message to PC to open
+    final window"""
     dele.robot.arm_down()
     ev3.Sound.speak("Godzilla was a better movie anyway").wait()
     dele.mqtt.send_message("the_end")
