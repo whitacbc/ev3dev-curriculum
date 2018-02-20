@@ -93,6 +93,10 @@ class Snatch3r(object):
         self.arm_motor.wait_while(ev3.Motor.STATE_HOLDING)
         ev3.Sound.beep()
 
+    # Manual_down is used to lower the arm if it is stuck in the up position
+    def manual_down(self):
+        self.arm_motor.run_forever(speed_sp=-100)
+
     def shutdown(self):
         """Stops all motors and turns off LEDs"""
         self.arm_motor.stop(stop_action='brake')
