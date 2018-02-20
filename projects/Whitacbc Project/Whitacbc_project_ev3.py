@@ -110,6 +110,7 @@ class Messages_from_pc(object):
                     turned_right = 0
 
             self.robot.arm_down()
+            ev3.Sound.speak("yah i made it")
 
 
 
