@@ -109,7 +109,6 @@ def Autonomous(mqtt_client):
 
     top_text = ttk.Label(main_frame, text='autonomous mode is now enabled\nplease watch the robot')
     top_text.grid()
-    mqtt_client.send_message('speak_message',['Starting_autonomous'])
 
     mqtt_client.send_message('speak_message',['Looking for clues'])
     mqtt_client.send_message('go_forward', [300, 300])

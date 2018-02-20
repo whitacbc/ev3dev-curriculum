@@ -48,12 +48,12 @@ class Messages_from_pc(object):
     def seek_beacon(self):
        self.robot.seek_beacon()
 
-    def speak_message(self,message):
-        ev3.Sound.speak(message[0])
+
 
 
 
     def Searching(self):
+        ev3.Sound.speak('Starting_autonomous')
         found = True
         Run_away = True
         turned_left = 0
@@ -72,8 +72,9 @@ class Messages_from_pc(object):
                 self.robot.not_go()
                 turned_left = 1
                 turned_right = 0
-                self.robot.turn_degrees(-90, 300)
+                self.robot.turn_degrees(90, 300)
                 self.robot.go_forward(300,300)
+                gone_forward.append(0)
                 time.sleep(1)
 
             if self.robot.color_sensor.color == ev3.ColorSensor.COLOR_BLUE:
@@ -81,8 +82,9 @@ class Messages_from_pc(object):
                 self.robot.not_go()
                 turned_right = 1
                 turned_left = 0
-                self.robot.turn_degrees(90, 300)
+                self.robot.turn_degrees(-90, 300)
                 self.robot.go_forward(300,300)
+                gone_forward.append(0)
                 time.sleep(1)
 
             if self.robot.color_sensor.color == ev3.ColorSensor.COLOR_RED:
@@ -93,19 +95,23 @@ class Messages_from_pc(object):
                 found = False
 
         while Run_away:
-            for i in gone_forward:
-                for k in range(i):
+            print (gone_forward)
+            print(turned_right)
+            print(turned_left)
+            for i in range(len(gone_forward)-1,-1,-1):
+                print(gone_forward[i])
+                for k in range(gone_forward[i]):
                     self.not_go()
-                    self.robot.go_backwards(300,300)
+                    self.robot.go_backwards(600,600)
                     time.sleep(.5)
 
                 if turned_left == 1:
-                    self.robot.turn_degrees(90,300)
+                    self.robot.turn_degrees(-90,300)
                     turned_left=0
                     turned_right=1
 
-                if turned_right == 1:
-                    self.robot.turn_degrees(-90,300)
+                elif turned_right == 1:
+                    self.robot.turn_degrees(90,300)
                     turned_left = 1
                     turned_right = 0
 
