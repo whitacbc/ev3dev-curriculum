@@ -1,5 +1,5 @@
 '''
-Temple Run v0.1
+Temple Run v0.9
 '''
 
 import tkinter

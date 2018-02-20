@@ -1,5 +1,5 @@
 '''
-red is right blue is left
+Temple run v0.9
 
 '''
 
@@ -63,7 +63,7 @@ class Messages_from_pc(object):
             if self.robot.color_sensor.color == ev3.ColorSensor.COLOR_WHITE:
                 print('i see white')
                 self.robot.not_go()
-                gone_forward[len(gone_forward)] += 1
+                gone_forward[len(gone_forward)-1] += 1
                 self.robot.go_forward(300, 300)
                 time.sleep(.5)
 
@@ -111,6 +111,8 @@ class Messages_from_pc(object):
 
             self.robot.arm_down()
             ev3.Sound.speak("yah i made it")
+            self.robot.not_go()
+            break
 
 
 
