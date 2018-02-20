@@ -40,7 +40,6 @@ class Snatch3r(object):
         assert self.pixy
 
         self.running = True
-        self.times_climbed = 0
 
     def drive_inches(self, inches_target, speed_deg_per_second):
         """ moves the robot by given speed for a given distance. Input
@@ -180,16 +179,3 @@ class Snatch3r(object):
             print(beacon_seeker.distance, beacon_seeker.heading)
             time.sleep(0.1)
         return what
-
-    def climb_building(self):
-        """Moves forward If close to an object, stops the robot and backs
-        away. Gorilla noise? hawkswmg"""
-        self.times_climbed += 1
-        while True:
-            self.go_forward(400, 400)
-            if self.ir_sensor.proximity == 1:
-                self.not_go()
-                self.drive_inches(2, -200)
-                break
-            time.sleep(0.1)
-        return self.times_climbed
